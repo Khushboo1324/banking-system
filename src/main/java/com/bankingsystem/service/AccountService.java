@@ -44,7 +44,6 @@ public class AccountService {
                 .orElseThrow(() ->
                         new AccountNotFoundException("Account not found"));
     }
-
     @CacheEvict(value = "accounts", key = "#account.id")
     public Account save(Account account) {
         return accountRepository.save(account);
