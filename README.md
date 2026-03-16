@@ -1,6 +1,6 @@
-# 🏦 Banking System Backend
+# 🏦 Banking System – Full-Stack Digital Banking Application
 
-A robust and secure digital banking system backend built with Spring Boot and MongoDB, featuring JWT authentication, transaction management, and comprehensive API documentation.
+A full-stack digital banking application with a **Spring Boot + MongoDB** backend and a **React + Vite** frontend, featuring JWT authentication, account management, fund transfers, transaction history with analytics, and a clean, responsive UI.
 
 ## 📋 Table of Contents
 
@@ -10,6 +10,7 @@ A robust and secure digital banking system backend built with Spring Boot and Mo
 - [Installation](#-installation)
 - [Configuration](#-configuration)
 - [Running the Application](#-running-the-application)
+- [Frontend Overview](#-frontend-overview)
 - [API Documentation](#-api-documentation)
 - [Project Structure](#-project-structure)
 - [API Endpoints](#-api-endpoints)
@@ -19,46 +20,61 @@ A robust and secure digital banking system backend built with Spring Boot and Mo
 ## ✨ Features
 
 ### Core Banking Features
-- 👤 **User Management** - User registration, authentication, and profile management
-- 🏦 **Account Management** - Create and manage multiple account types (Savings/Current)
-- 💸 **Transaction Processing** - Deposit, withdrawal, and transfer operations
-- 📊 **Transaction Analytics** - Detailed transaction history and analytics
-- 🔍 **Advanced Filtering** - Filter transactions by type, date, and more
+- 👤 **User Management** – Registration, login, and profile management
+- 🏦 **Account Management** – Create and manage Savings or Current accounts
+- 💸 **Fund Transfers** – Send money instantly to any account by Account ID
+- 💰 **Deposits & Withdrawals** – Manage your account balance
+- 📊 **Transaction Analytics** – View total credits, debits, and full history
+- 🔍 **Advanced Filtering** – Filter and search transactions by type or keyword
+
+### Frontend UI
+- 🖥️ **Dashboard** – Welcome banner, balance overview, credit/debit stats, and quick actions
+- 🗂️ **Accounts Page** – Visual account card with balance and account details
+- ↔️ **Transfer Page** – Transfer funds to another account with live balance display
+- 📋 **Transactions Page** – Paginated transaction table with type filter and search
+- 👤 **Profile Page** – View personal info and account summary, with logout
+- 📱 **Responsive Layout** – Sidebar navigation with mobile-friendly hamburger menu
+- 🔔 **Toast Notifications** – Real-time success/error feedback on all actions
 
 ### Security & Performance
-- 🔐 **JWT Authentication** - Secure token-based authentication
-- 🛡️ **Spring Security** - Role-based access control (ADMIN/USER)
-- ⚡ **Caching** - Performance optimization with Spring Cache
-- 🚦 **Rate Limiting** - API rate limiting to prevent abuse
-- ✉️ **Email Notifications** - Email service integration for notifications
+- 🔐 **JWT Authentication** – Secure token-based authentication
+- 🛡️ **Spring Security** – Role-based access control (ADMIN/USER)
+- ⚡ **Caching** – Performance optimisation with Spring Cache
+- 🚦 **Rate Limiting** – API rate limiting to prevent abuse
+- ✉️ **Email Notifications** – Email service integration for notifications
 
 ### Developer Features
-- 📝 **API Documentation** - Interactive Swagger/OpenAPI documentation
-- ✅ **Validation** - Request validation with Jakarta Validation
-- 🎯 **Exception Handling** - Global exception handling mechanism
-- 📁 **File Upload** - File management capabilities
+- 📝 **API Documentation** – Interactive Swagger/OpenAPI documentation
+- ✅ **Validation** – Request validation with Jakarta Validation
+- 🎯 **Exception Handling** – Global exception handling mechanism
+- 📁 **File Upload** – File management capabilities
 
 ## 🛠️ Tech Stack
 
-### Backend Framework
-- **Spring Boot 3.2.5** - Main application framework
-- **Java 17** - Programming language
+### Backend
+| Layer | Technology |
+|-------|-----------|
+| Framework | Spring Boot 3.2.5 |
+| Language | Java 17 |
+| Database | MongoDB |
+| Security | Spring Security + JWT (jjwt 0.11.5) |
+| Documentation | SpringDoc OpenAPI (Swagger UI) |
+| Email | Spring Mail |
+| Validation | Jakarta Validation |
+| Build tool | Maven |
+| Utilities | Lombok |
 
-### Database
-- **MongoDB** - NoSQL database for flexible data storage
-
-### Security
-- **Spring Security** - Security framework
-- **JWT (jjwt 0.11.5)** - JSON Web Token for authentication
-
-### Additional Libraries
-- **Lombok** - Reduce boilerplate code
-- **SpringDoc OpenAPI** - API documentation
-- **Spring Mail** - Email functionality
-- **Jakarta Validation** - Request validation
-
-### Build Tool
-- **Maven** - Dependency management and build automation
+### Frontend
+| Layer | Technology |
+|-------|-----------|
+| Framework | React 19 |
+| Build tool | Vite 8 |
+| Styling | Tailwind CSS 3 |
+| Routing | React Router v7 |
+| HTTP client | Axios |
+| Icons | Lucide React |
+| Notifications | React Hot Toast |
+| State | React Context API |
 
 ## 📦 Prerequisites
 
@@ -66,31 +82,38 @@ Before running this application, ensure you have:
 
 - **Java 17** or higher
 - **Maven 3.6+**
-- **MongoDB 4.4+** (running on localhost:27017)
+- **MongoDB 4.4+** (running on `localhost:27017`)
+- **Node.js 18+** and **npm 9+** (for the frontend)
 - **IDE** (IntelliJ IDEA, Eclipse, or VS Code recommended)
 
 ## 🚀 Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Khushboo1324/banking-system-backend.git
-   cd banking-system-backend
-   ```
+### 1. Clone the repository
+```bash
+git clone https://github.com/Khushboo1324/banking-system-backend.git
+cd banking-system-backend
+```
 
-2. **Install dependencies**
-   ```bash
-   mvn clean install
-   ```
+### 2. Backend – install dependencies
+```bash
+mvn clean install
+```
 
-3. **Set up MongoDB**
-   - Ensure MongoDB is running on `localhost:27017`
-   - The application will automatically create the database `banking_db`
+### 3. Frontend – install dependencies
+```bash
+cd banking-frontend
+npm install
+```
+
+### 4. Set up MongoDB
+- Ensure MongoDB is running on `localhost:27017`
+- The application will automatically create the database `banking_db`
 
 ## ⚙️ Configuration
 
-### Application Configuration
+### Backend – Application Configuration
 
-Edit `src/main/resources/application.yaml` to configure:
+Edit `src/main/resources/application.yaml`:
 
 ```yaml
 spring:
@@ -116,101 +139,139 @@ jwt:
 
 ### Environment Variables
 
-Set the following environment variables:
-
 ```bash
 # Email Configuration
 export MAIL_USERNAME=your-email@gmail.com
 export MAIL_PASSWORD=your-app-password
 ```
 
-### MongoDB Setup
+### Frontend – Vite Proxy
 
-The application expects MongoDB to be running with the following default settings:
-- **Host**: localhost
-- **Port**: 27017
-- **Database**: banking_db
+The frontend dev server is configured to proxy API requests to the backend. See `banking-frontend/vite.config.js`. No extra configuration is required during local development as long as the backend runs on port `8080`.
 
 ## ▶️ Running the Application
 
-### Using Maven
+### Start the Backend
 
+**Using Maven:**
 ```bash
 mvn spring-boot:run
 ```
 
-### Using Java
-
+**Using Java:**
 ```bash
 mvn clean package
 java -jar target/banking-system-0.0.1-SNAPSHOT.jar
 ```
 
-### Using Maven Wrapper
-
+**Using Maven Wrapper:**
 ```bash
-# On Windows
-mvnw.cmd spring-boot:run
-
 # On Linux/Mac
 ./mvnw spring-boot:run
+
+# On Windows
+mvnw.cmd spring-boot:run
 ```
 
-The application will start on `http://localhost:8080`
+The backend API will be available at `http://localhost:8080`.
+
+### Start the Frontend
+
+```bash
+cd banking-frontend
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`.
+
+> **Tip:** Start the backend first so that the frontend can reach the API immediately.
+
+## 🖥️ Frontend Overview
+
+The frontend is a single-page application (SPA) with the following screens:
+
+| Route | Page | Description |
+|-------|------|-------------|
+| `/login` | Login | Sign in with email and password |
+| `/register` | Register | Create a new user account |
+| `/dashboard` | Dashboard | Balance overview, analytics, quick actions |
+| `/accounts` | Accounts | Account card, balance refresh, create account |
+| `/transfer` | Transfer | Send funds to another account by Account ID |
+| `/transactions` | Transactions | Full transaction history with filter and search |
+| `/profile` | Profile | User details, account info, logout |
+
+### State Management
+
+- **AuthContext** – Manages JWT token, user data, and login/logout state (persisted in `localStorage`).
+- **AccountContext** – Manages the active account, balance refreshing, and session rehydration.
 
 ## 📚 API Documentation
 
-Once the application is running, access the interactive API documentation:
+Once the backend is running, access the interactive API docs:
 
 - **Swagger UI**: `http://localhost:8080/swagger-ui.html`
-- **OpenAPI Docs**: `http://localhost:8080/v3/api-docs`
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
 
 ## 📁 Project Structure
 
 ```
 banking-system-backend/
+├── banking-frontend/            # React + Vite frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── api/                 # Axios API clients
+│   │   │   ├── axiosInstance.js
+│   │   │   ├── authApi.js
+│   │   │   ├── accountApi.js
+│   │   │   ├── transactionApi.js
+│   │   │   └── userApi.js
+│   │   ├── components/          # Shared UI components
+│   │   │   ├── Layout.jsx       # Sidebar + top nav
+│   │   │   ├── StatCard.jsx
+│   │   │   └── Spinner.jsx
+│   │   ├── context/             # React Context providers
+│   │   │   ├── AuthContext.jsx
+│   │   │   └── AccountContext.jsx
+│   │   ├── pages/               # Route-level page components
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Accounts.jsx
+│   │   │   ├── Transfer.jsx
+│   │   │   ├── Transactions.jsx
+│   │   │   └── Profile.jsx
+│   │   ├── routes/
+│   │   │   └── ProtectedRoute.jsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
+│
 ├── src/
 │   ├── main/
 │   │   ├── java/com/bankingsystem/
-│   │   │   ├── config/              # Configuration classes
-│   │   │   │   ├── SecurityConfig.java
-│   │   │   │   ├── JwtAuthenticationFilter.java
-│   │   │   │   ├── CacheConfig.java
-│   │   │   │   ├── RateLimitInterceptor.java
-│   │   │   │   └── ...
-│   │   │   ├── controller/          # REST Controllers
+│   │   │   ├── config/          # Security, cache, rate-limit configs
+│   │   │   ├── controller/      # REST Controllers
 │   │   │   │   ├── AuthController.java
 │   │   │   │   ├── AccountController.java
 │   │   │   │   ├── TransactionController.java
-│   │   │   │   └── UserController.java
-│   │   │   ├── dto/                 # Data Transfer Objects
+│   │   │   │   ├── UserController.java
+│   │   │   │   └── FileController.java
+│   │   │   ├── dto/             # Data Transfer Objects
 │   │   │   │   ├── AuthenticationDtos/
 │   │   │   │   ├── AccountDtos/
 │   │   │   │   ├── TransactionDtos/
 │   │   │   │   └── UserDtos/
-│   │   │   ├── exception/           # Custom Exceptions
-│   │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   │   └── ...
-│   │   │   ├── model/               # Domain Models
-│   │   │   │   ├── User.java
-│   │   │   │   ├── Account.java
-│   │   │   │   ├── Transaction.java
-│   │   │   │   └── ...
-│   │   │   ├── repository/          # Data Access Layer
-│   │   │   │   ├── UserRepository.java
-│   │   │   │   ├── AccountRepository.java
-│   │   │   │   └── TransactionRepository.java
-│   │   │   ├── service/             # Business Logic
-│   │   │   │   ├── AuthService.java
-│   │   │   │   ├── AccountService.java
-│   │   │   │   ├── TransactionService.java
-│   │   │   │   └── UserService.java
-│   │   │   └── util/                # Utility Classes
-│   │   │       └── JwtUtil.java
+│   │   │   ├── exception/       # Global exception handler
+│   │   │   ├── model/           # Domain models (User, Account, Transaction…)
+│   │   │   ├── repository/      # Spring Data MongoDB repositories
+│   │   │   ├── service/         # Business logic services
+│   │   │   └── util/            # JwtUtil and helpers
 │   │   └── resources/
-│   │       └── application.yaml     # Application Configuration
-│   └── test/                        # Test Classes
-├── pom.xml                          # Maven Configuration
+│   │       └── application.yaml
+│   └── test/
+├── pom.xml
 └── README.md
 ```
 
@@ -233,21 +294,22 @@ banking-system-backend/
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
-| POST | `/api/accounts` | Create a new account | Yes |
+| POST | `/api/accounts?userId={userId}` | Create a new account | Yes |
 | GET | `/api/accounts/{id}/balance` | Get account balance | Yes |
 | POST | `/api/accounts/{id}/deposit` | Deposit money | Yes |
 | POST | `/api/accounts/{id}/withdraw` | Withdraw money | Yes |
-| POST | `/api/accounts/{id}/transfer` | Transfer money to another account | Yes |
+
+> **Transfers** are performed by the frontend by calling withdraw on the sender's account followed by deposit on the receiver's account.
 
 ### Transactions
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
 | GET | `/transactions/account/{accountId}` | Get all transactions for an account | Yes |
-| GET | `/transactions/filter` | Filter transactions by type, date, etc. | Yes |
-| GET | `/transactions/analytics/{accountId}` | Get transaction analytics | Yes |
+| GET | `/transactions/filter` | Filter transactions by type, page, size | Yes |
+| GET | `/transactions/analytics/{accountId}` | Get total credit/debit analytics | Yes |
 
-### Request Examples
+### Request/Response Examples
 
 #### Register a User
 ```json
@@ -267,7 +329,7 @@ POST /api/auth/login
   "password": "securePassword123"
 }
 
-Response:
+// Response
 {
   "token": "eyJhbGciOiJIUzI1NiIs...",
   "userId": "507f1f77bcf86cd799439011",
@@ -282,7 +344,7 @@ POST /api/accounts?userId=507f1f77bcf86cd799439011
   "accountType": "SAVINGS"
 }
 
-Response:
+// Response
 {
   "accountId": "507f191e810c19729de860ea",
   "accountNumber": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
@@ -296,19 +358,24 @@ Response:
 POST /api/accounts/{accountId}/deposit
 {
   "amount": 1000.00,
-  "description": "Initial deposit"
+  "accountId": "{accountId}"
 }
+```
+
+#### Filter Transactions
+```
+GET /transactions/filter?accountId={accountId}&type=CREDIT&page=0&size=10&sortBy=transactionDate
 ```
 
 ## 🔒 Security
 
 ### Authentication Flow
-1. User registers with email and password
+1. User registers with name, email, and password
 2. Password is encrypted using BCrypt
 3. User logs in with credentials
-4. Server returns JWT token
-5. Client includes token in Authorization header for subsequent requests
-6. Token is validated on each protected endpoint
+4. Server returns a JWT token along with the user ID and role
+5. Client stores the token in `localStorage` and includes it in every subsequent request as `Authorization: Bearer <token>`
+6. Token is validated on each protected endpoint via `JwtAuthenticationFilter`
 
 ### JWT Token Format
 ```
@@ -316,12 +383,12 @@ Authorization: Bearer <jwt-token>
 ```
 
 ### Roles
-- **USER** - Standard user with access to own accounts
-- **ADMIN** - Administrative privileges
+- **USER** – Standard user with access to own accounts and transactions
+- **ADMIN** – Administrative privileges
 
 ## 🧪 Testing
 
-Run tests using Maven:
+Run backend tests with Maven:
 
 ```bash
 mvn test
@@ -339,7 +406,7 @@ Contributions are welcome! Please follow these steps:
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License – see the LICENSE file for details.
 
 ## 👨‍💻 Author
 
@@ -353,13 +420,15 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - MongoDB Documentation
 - JWT.io for token debugging
 - Swagger/OpenAPI for API documentation
+- Vite & React Documentation
 
 ---
 
-**Note**: This is a backend API service. For production deployment, ensure you:
-- Change the JWT secret key
-- Configure proper email credentials
-- Set up MongoDB with authentication
-- Enable HTTPS
-- Configure CORS policies appropriately
-- Implement proper logging and monitoring
+**Production Deployment Checklist:**
+- [ ] Change the JWT secret key to a strong, randomly generated value
+- [ ] Configure proper email credentials via environment variables
+- [ ] Set up MongoDB with authentication enabled
+- [ ] Enable HTTPS / TLS termination
+- [ ] Configure CORS policies for your deployed frontend domain
+- [ ] Build the frontend for production: `cd banking-frontend && npm run build`
+- [ ] Implement proper logging and monitoring
