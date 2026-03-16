@@ -90,8 +90,8 @@ Before running this application, ensure you have:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Khushboo1324/banking-system-backend.git
-cd banking-system-backend
+git clone https://github.com/Khushboo1324/banking-system.git
+cd banking-system
 ```
 
 ### 2. Backend – install dependencies
@@ -215,7 +215,7 @@ Once the backend is running, access the interactive API docs:
 ## 📁 Project Structure
 
 ```
-banking-system-backend/
+banking-system/
 ├── banking-frontend/            # React + Vite frontend
 │   ├── public/
 │   ├── src/
