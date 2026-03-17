@@ -100,7 +100,7 @@ export default function Accounts() {
 
             <p className="text-primary-200 text-xs mb-1">Current Balance</p>
             <p className="text-4xl font-bold tracking-tight mb-6">
-              ${(account.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              ₨{(account.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </p>
 
             <div className="border-t border-white/20 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">

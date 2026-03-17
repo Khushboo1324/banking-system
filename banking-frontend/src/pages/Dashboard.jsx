@@ -87,8 +87,8 @@ export default function Dashboard() {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Welcome banner */}
       <div className="bg-gradient-to-r from-primary-700 to-primary-500 rounded-2xl p-6 text-white shadow-lg">
-        <p className="text-primary-200 text-sm font-medium">Good day,</p>
-        <h1 className="text-2xl font-bold mt-0.5">{user?.name ?? 'Welcome back!'} 👋</h1>
+        <p className="text-primary-200 text-sm font-medium">Welcome,</p>
+        <h1 className="text-2xl font-bold mt-0.5">{user?.name ?? 'Welcome back!'} !!</h1>
         <p className="text-primary-200 text-sm mt-1">{user?.email}</p>
       </div>
 
@@ -143,7 +143,7 @@ export default function Dashboard() {
               value={
                 loadingBalance
                   ? '...'
-                  : `${(balance ?? account.balance ?? 0).toLocaleString('en-US', {
+                  : `₨${(balance ?? account.balance ?? 0).toLocaleString('en-US', {
                       minimumFractionDigits: 2,
                     })}`
               }
@@ -155,7 +155,7 @@ export default function Dashboard() {
               label="Total Credits"
               value={
                 analytics
-                  ? `${analytics.totalCredit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+                  ? `₨${analytics.totalCredit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
                   : '—'
               }
               subtext="All time deposits"
@@ -166,7 +166,7 @@ export default function Dashboard() {
               label="Total Debits"
               value={
                 analytics
-                  ? `${analytics.totalDebit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+                  ? `₨${analytics.totalDebit.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
                   : '—'
               }
               subtext="All time withdrawals"

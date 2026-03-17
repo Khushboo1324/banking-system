@@ -25,7 +25,7 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/v3/api-docs/**",
@@ -34,7 +34,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/accounts/**").authenticated()
-                        .requestMatchers("/api/transactions/**").authenticated()
+                        .requestMatchers("/transactions/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

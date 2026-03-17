@@ -182,7 +182,7 @@ export default function Transactions() {
                                 : 'text-red-500'
                             }
                           >
-                            {tx.transactionType === 'CREDIT' ? '+' : '-'}$
+                            {tx.transactionType === 'CREDIT' ? '+' : '-'}₨
                             {tx.amount?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                           </span>
                         </td>

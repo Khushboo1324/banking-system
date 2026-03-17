@@ -1,7 +1,15 @@
 import axios from 'axios';
 
+// In development the Vite proxy forwards /api → http://localhost:8080/api.
+// In production set VITE_API_BASE_URL to your deployed backend origin, e.g.
+//   VITE_API_BASE_URL=https://api.mybank.com
+// Leave it unset (or empty) to keep using the relative /api path (same-origin deploy).
+const BASE = import.meta.env.VITE_API_BASE_URL
+  ? `${import.meta.env.VITE_API_BASE_URL}/api`
+  : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE,
   headers: { 'Content-Type': 'application/json' },
 });
 

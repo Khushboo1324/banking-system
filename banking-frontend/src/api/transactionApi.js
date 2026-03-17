@@ -1,9 +1,14 @@
 import api from './axiosInstance';
 import axios from 'axios';
 
-// Use a separate axios instance for /transactions (not under /api prefix)
+// /transactions lives outside the /api prefix — it maps directly to the backend
+// root, e.g.  https://api.mybank.com/transactions  (or /transactions via proxy in dev)
+const TRANSACTIONS_BASE = import.meta.env.VITE_API_BASE_URL
+  ? `${import.meta.env.VITE_API_BASE_URL}/transactions`
+  : '/transactions';
+
 const transactionsApi = axios.create({
-  baseURL: '/transactions',
+  baseURL: TRANSACTIONS_BASE,
   headers: { 'Content-Type': 'application/json' },
 });
 

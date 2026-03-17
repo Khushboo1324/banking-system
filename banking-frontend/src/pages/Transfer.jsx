@@ -3,55 +3,79 @@ import { useAccount } from '../context/AccountContext';
 import { transfer } from '../api/transactionApi';
 import { ArrowLeftRight, CheckCircle2, AlertCircle } from 'lucide-react';
 import Spinner from '../components/Spinner';
+import PinModal from '../components/PinModal';
+import { hasPin, verifyPin } from '../utils/pinUtils';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function Transfer() {
   const { account, refreshBalance } = useAccount();
+  const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    toAccountId: '',
-    amount: '',
-    description: '',
-  });
+  const [form, setForm] = useState({ toAccountId: '', amount: '', description: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null); // 'success' | 'error'
+
+  // PIN modal state
+  const [pinOpen, setPinOpen] = useState(false);
+  const [pinError, setPinError] = useState('');
+  const [pinLoading, setPinLoading] = useState(false);
+  // Holds the validated form data while PIN modal is open
+  const [pendingTransfer, setPendingTransfer] = useState(null);
 
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e) => {
+  // Step 1: validate form, then open PIN modal
+  const handleSubmit = (e) => {
     e.preventDefault();
     setResult(null);
 
-    if (!account) {
-      toast.error('You need an account to transfer funds');
-      return;
-    }
-    if (!form.toAccountId.trim()) {
-      toast.error('Please enter a receiver account ID');
-      return;
-    }
-    if (form.toAccountId.trim() === account.accountId) {
-      toast.error('Cannot transfer to the same account');
-      return;
-    }
+    if (!account) { toast.error('You need an account to transfer funds'); return; }
+    if (!form.toAccountId.trim()) { toast.error('Please enter a receiver account ID'); return; }
+    if (form.toAccountId.trim() === account.accountId) { toast.error('Cannot transfer to the same account'); return; }
+
     const amount = parseFloat(form.amount);
-    if (!amount || amount <= 0) {
-      toast.error('Enter a valid amount');
-      return;
-    }
-    if (amount > (account.balance ?? 0)) {
-      toast.error('Insufficient balance');
+    if (!amount || amount <= 0) { toast.error('Enter a valid amount'); return; }
+    if (amount > (account.balance ?? 0)) { toast.error('Insufficient balance'); return; }
+
+    // If no PIN set yet, redirect to Profile to create one
+    if (!hasPin()) {
+      toast.error('Please set a transfer PIN in your Profile before sending money');
+      navigate('/profile');
       return;
     }
 
+    // All good – open PIN confirmation modal
+    setPendingTransfer({ toAccountId: form.toAccountId.trim(), amount, description: form.description.trim() });
+    setPinError('');
+    setPinOpen(true);
+  };
+
+  // Step 2: verify PIN then execute transfer
+  const handlePinConfirm = async (enteredPin) => {
+    setPinLoading(true);
+    setPinError('');
+
+    const valid = await verifyPin(enteredPin);
+    if (!valid) {
+      setPinError('Incorrect PIN. Please try again.');
+      setPinLoading(false);
+      return;
+    }
+
+    // PIN correct — close modal and execute transfer
+    setPinOpen(false);
+    setPinLoading(false);
     setLoading(true);
+
     try {
-      await transfer(account.accountId, form.toAccountId.trim(), amount, form.description.trim());
+      await transfer(account.accountId, pendingTransfer.toAccountId, pendingTransfer.amount, pendingTransfer.description);
       await refreshBalance();
       setResult('success');
       toast.success('Transfer successful!');
       setForm({ toAccountId: '', amount: '', description: '' });
+      setPendingTransfer(null);
     } catch (err) {
       const msg =
         err.response?.data?.message ||
@@ -92,7 +116,7 @@ export default function Transfer() {
             <div>
               <p className="text-xs text-slate-400">Available Balance</p>
               <p className="text-sm font-bold text-slate-800">
-                ${(account.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                ₨{(account.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </p>
             </div>
           </div>
@@ -134,7 +158,7 @@ export default function Transfer() {
             <label className="label">Amount</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium">
-                $
+                ₨
               </span>
               <input
                 type="number"
@@ -198,6 +222,15 @@ export default function Transfer() {
           submitting.
         </p>
       </div>
+
+      {/* PIN confirmation modal */}
+      <PinModal
+        isOpen={pinOpen}
+        onClose={() => { setPinOpen(false); setPendingTransfer(null); }}
+        onConfirm={handlePinConfirm}
+        loading={pinLoading}
+        error={pinError}
+      />
     </div>
   );
 }

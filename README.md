@@ -1,6 +1,6 @@
 # 🏦 Banking System – Full-Stack Digital Banking Application
 
-A full-stack digital banking application with a **Spring Boot + MongoDB** backend and a **React + Vite** frontend, featuring JWT authentication, account management, fund transfers, transaction history with analytics, and a clean, responsive UI.
+A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** backend and a **React + Vite** frontend, featuring JWT authentication, account management, PIN-secured fund transfers, transaction history with analytics, and a clean responsive UI.
 
 ## 📋 Table of Contents
 
@@ -15,39 +15,39 @@ A full-stack digital banking application with a **Spring Boot + MongoDB** backen
 - [Project Structure](#-project-structure)
 - [API Endpoints](#-api-endpoints)
 - [Security](#-security)
-- [Contributing](#-contributing)
+- [Deployment](#-deployment)
+
+---
 
 ## ✨ Features
 
-### Core Banking Features
-- 👤 **User Management** – Registration, login, and profile management
-- 🏦 **Account Management** – Create and manage Savings or Current accounts
-- 💸 **Fund Transfers** – Send money instantly to any account by Account ID
-- 💰 **Deposits & Withdrawals** – Manage your account balance
-- 📊 **Transaction Analytics** – View total credits, debits, and full history
-- 🔍 **Advanced Filtering** – Filter and search transactions by type or keyword
+### Core Banking
+- 👤 **User Registration & Login** — Secure JWT-based auth with BCrypt password hashing
+- 🏦 **Account Management** — Create Savings or Current accounts per user
+- 💸 **PIN-Secured Transfers** — Send money to any account by Account ID; every transfer requires a 4-digit Transfer PIN
+- 💰 **Deposits & Withdrawals** — Full balance management
+- 📊 **Transaction Analytics** — Total credit/debit stats on the Dashboard
+- 🔍 **Transaction History** — Filterable, searchable table (ALL / CREDIT / DEBIT)
 
 ### Frontend UI
-- 🖥️ **Dashboard** – Welcome banner, balance overview, credit/debit stats, and quick actions
-- 🗂️ **Accounts Page** – Visual account card with balance and account details
-- ↔️ **Transfer Page** – Transfer funds to another account with live balance display
-- 📋 **Transactions Page** – Paginated transaction table with type filter and search
-- 👤 **Profile Page** – View personal info and account summary, with logout
-- 📱 **Responsive Layout** – Sidebar navigation with mobile-friendly hamburger menu
-- 🔔 **Toast Notifications** – Real-time success/error feedback on all actions
+- 🖥️ **Dashboard** — Welcome banner, live balance, analytics cards, quick-action buttons
+- 🗂️ **Accounts Page** — Visual gradient account card, balance refresh, create-account form with type selector
+- ↔️ **Transfer Page** — PIN modal confirmation before every transfer
+- 📋 **Transactions Page** — Full history with filter tabs and keyword search
+- 👤 **Profile Page** — Personal info, account details, **Change Transfer PIN** flow (verify current → set new → confirm)
+- 📱 **Responsive Layout** — Collapsible sidebar with mobile hamburger menu
+- 🔔 **Toast Notifications** — Real-time success/error feedback
+- ₨ **Rupee currency** — All monetary values displayed with ₨ symbol
 
 ### Security & Performance
-- 🔐 **JWT Authentication** – Secure token-based authentication
-- 🛡️ **Spring Security** – Role-based access control (ADMIN/USER)
-- ⚡ **Caching** – Performance optimisation with Spring Cache
-- 🚦 **Rate Limiting** – API rate limiting to prevent abuse
-- ✉️ **Email Notifications** – Email service integration for notifications
+- 🔐 **JWT Authentication** — Stateless token auth, auto-logout on 401
+- 🛡️ **Spring Security** — Properly wired CORS + route protection
+- ⚡ **Spring Cache** — Performance optimisation
+- 🚦 **Rate Limiting** — Per-IP request counter (100 req/min, resets on schedule)
+- ✉️ **Email Notifications** — Spring Mail integration (SMTP)
+- 🔑 **Transfer PIN** — SHA-256 hashed, stored only in `localStorage`; set at registration, changeable from Profile
 
-### Developer Features
-- 📝 **API Documentation** – Interactive Swagger/OpenAPI documentation
-- ✅ **Validation** – Request validation with Jakarta Validation
-- 🎯 **Exception Handling** – Global exception handling mechanism
-- 📁 **File Upload** – File management capabilities
+---
 
 ## 🛠️ Tech Stack
 
@@ -56,12 +56,12 @@ A full-stack digital banking application with a **Spring Boot + MongoDB** backen
 |-------|-----------|
 | Framework | Spring Boot 3.2.5 |
 | Language | Java 17 |
-| Database | MongoDB |
+| Database | MongoDB Atlas |
 | Security | Spring Security + JWT (jjwt 0.11.5) |
 | Documentation | SpringDoc OpenAPI (Swagger UI) |
-| Email | Spring Mail |
+| Email | Spring Mail (Gmail SMTP) |
 | Validation | Jakarta Validation |
-| Build tool | Maven |
+| Build | Maven (Maven Wrapper included) |
 | Utilities | Lombok |
 
 ### Frontend
@@ -76,15 +76,16 @@ A full-stack digital banking application with a **Spring Boot + MongoDB** backen
 | Notifications | React Hot Toast |
 | State | React Context API |
 
+---
+
 ## 📦 Prerequisites
 
-Before running this application, ensure you have:
+- **Java 17+**
+- **Maven 3.6+** (or use the included `./mvnw`)
+- **Node.js 18+** and **npm 9+**
+- A **MongoDB Atlas** cluster (free tier is fine) — or a local MongoDB instance
 
-- **Java 17** or higher
-- **Maven 3.6+**
-- **MongoDB 4.4+** (running on `localhost:27017`)
-- **Node.js 18+** and **npm 9+** (for the frontend)
-- **IDE** (IntelliJ IDEA, Eclipse, or VS Code recommended)
+---
 
 ## 🚀 Installation
 
@@ -94,341 +95,271 @@ git clone https://github.com/Khushboo1324/banking-system.git
 cd banking-system
 ```
 
-### 2. Backend – install dependencies
+### 2. Backend — install dependencies
 ```bash
-mvn clean install
+./mvnw clean install -DskipTests
 ```
 
-### 3. Frontend – install dependencies
+### 3. Frontend — install dependencies
 ```bash
 cd banking-frontend
 npm install
 ```
 
-### 4. Set up MongoDB
-- Ensure MongoDB is running on `localhost:27017`
-- The application will automatically create the database `banking_db`
+---
 
 ## ⚙️ Configuration
 
-### Backend – Application Configuration
+### Environment variables
 
-Edit `src/main/resources/application.yaml`:
-
-```yaml
-spring:
-  application:
-    name: Banking-System
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/DigitalBank
-      database: banking_db
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-
-server:
-  port: 8080
-
-jwt:
-  secret: your-secret-key-here
-  expiration: 86400000  # 24 hours in milliseconds
-```
-
-### Environment Variables
+Copy the example files and fill in your values:
 
 ```bash
-# Email Configuration
-export MAIL_USERNAME=your-email@gmail.com
-export MAIL_PASSWORD=your-app-password
+# Backend
+cp .env.example .env
+
+# Frontend
+cp banking-frontend/.env.example banking-frontend/.env.local
 ```
 
-### Frontend – Vite Proxy
+#### Backend `.env`
+| Variable | Description | Default (fallback) |
+|----------|-------------|-------------------|
+| `MONGODB_URI` | MongoDB Atlas connection URI | hardcoded Atlas URI in `application.yaml` |
+| `MAIL_USERNAME` | Gmail address for email notifications | _(empty — email disabled)_ |
+| `MAIL_PASSWORD` | Gmail App Password | _(empty — email disabled)_ |
+| `JWT_SECRET` | JWT signing secret (use 64+ random chars in prod) | hardcoded dev key |
 
-The frontend dev server is configured to proxy API requests to the backend. See `banking-frontend/vite.config.js`. No extra configuration is required during local development as long as the backend runs on port `8080`.
+#### Frontend `.env.local`
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_BASE_URL` | Backend origin in production, e.g. `https://api.mybank.com` | _(empty — uses Vite proxy / same-origin)_ |
+
+> **Note:** Leave `VITE_API_BASE_URL` empty during local development — the Vite dev server proxy handles routing to `localhost:8080` automatically.
+
+---
 
 ## ▶️ Running the Application
 
-### Start the Backend
+> Start the **backend first** so the frontend proxy can reach it immediately.
 
-**Using Maven:**
-```bash
-mvn spring-boot:run
-```
+### Backend
 
-**Using Java:**
 ```bash
-mvn clean package
+# Using Maven wrapper (recommended)
+./mvnw spring-boot:run
+
+# Or run the packaged JAR
+./mvnw clean package -DskipTests
 java -jar target/banking-system-0.0.1-SNAPSHOT.jar
 ```
 
-**Using Maven Wrapper:**
-```bash
-# On Linux/Mac
-./mvnw spring-boot:run
+API available at → `http://localhost:8080`  
+Swagger UI → `http://localhost:8080/swagger-ui.html`
 
-# On Windows
-mvnw.cmd spring-boot:run
-```
-
-The backend API will be available at `http://localhost:8080`.
-
-### Start the Frontend
+### Frontend
 
 ```bash
 cd banking-frontend
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:5173`.
+App available at → `http://localhost:5173`
 
-> **Tip:** Start the backend first so that the frontend can reach the API immediately.
+---
 
 ## 🖥️ Frontend Overview
 
-The frontend is a single-page application (SPA) with the following screens:
-
 | Route | Page | Description |
 |-------|------|-------------|
-| `/login` | Login | Sign in with email and password |
-| `/register` | Register | Create a new user account |
-| `/dashboard` | Dashboard | Balance overview, analytics, quick actions |
-| `/accounts` | Accounts | Account card, balance refresh, create account |
-| `/transfer` | Transfer | Send funds to another account by Account ID |
-| `/transactions` | Transactions | Full transaction history with filter and search |
-| `/profile` | Profile | User details, account info, logout |
+| `/login` | Login | Sign in with email + password |
+| `/register` | Register | Create user account + set 4-digit Transfer PIN |
+| `/dashboard` | Dashboard | Balance, analytics stats, quick actions |
+| `/accounts` | Accounts | Account card, refresh, create account (Savings/Current) |
+| `/transfer` | Transfer | Send funds — requires PIN confirmation modal |
+| `/transactions` | Transactions | Full history, filter by type, keyword search |
+| `/profile` | Profile | Personal info, account details, Change Transfer PIN |
 
-### State Management
+### Transfer PIN flow
+1. **Registration** — user sets a 4-digit Transfer PIN; it is SHA-256 hashed and stored in `localStorage`
+2. **Transfer** — PIN modal appears before every transfer; wrong PIN blocks the operation
+3. **Profile → Change PIN** — 3-step wizard: verify current PIN → enter new PIN → confirm new PIN
 
-- **AuthContext** – Manages JWT token, user data, and login/logout state (persisted in `localStorage`).
-- **AccountContext** – Manages the active account, balance refreshing, and session rehydration.
+### Session persistence
+- JWT token and user ID stored in `localStorage`
+- On every page load `AccountContext` silently refreshes balance from the backend
+- 401 responses automatically redirect to `/login`
+
+---
 
 ## 📚 API Documentation
 
-Once the backend is running, access the interactive API docs:
+Run the backend, then open:
 
 - **Swagger UI**: `http://localhost:8080/swagger-ui.html`
 - **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+
+---
 
 ## 📁 Project Structure
 
 ```
 banking-system/
-├── banking-frontend/            # React + Vite frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── api/                 # Axios API clients
-│   │   │   ├── axiosInstance.js
-│   │   │   ├── authApi.js
-│   │   │   ├── accountApi.js
-│   │   │   ├── transactionApi.js
-│   │   │   └── userApi.js
-│   │   ├── components/          # Shared UI components
-│   │   │   ├── Layout.jsx       # Sidebar + top nav
-│   │   │   ├── StatCard.jsx
-│   │   │   └── Spinner.jsx
-│   │   ├── context/             # React Context providers
-│   │   │   ├── AuthContext.jsx
-│   │   │   └── AccountContext.jsx
-│   │   ├── pages/               # Route-level page components
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Accounts.jsx
-│   │   │   ├── Transfer.jsx
-│   │   │   ├── Transactions.jsx
-│   │   │   └── Profile.jsx
-│   │   ├── routes/
-│   │   │   └── ProtectedRoute.jsx
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── vite.config.js
-│
-├── src/
-│   ├── main/
-│   │   ├── java/com/bankingsystem/
-│   │   │   ├── config/          # Security, cache, rate-limit configs
-│   │   │   ├── controller/      # REST Controllers
-│   │   │   │   ├── AuthController.java
-│   │   │   │   ├── AccountController.java
-│   │   │   │   ├── TransactionController.java
-│   │   │   │   ├── UserController.java
-│   │   │   │   └── FileController.java
-│   │   │   ├── dto/             # Data Transfer Objects
-│   │   │   │   ├── AuthenticationDtos/
-│   │   │   │   ├── AccountDtos/
-│   │   │   │   ├── TransactionDtos/
-│   │   │   │   └── UserDtos/
-│   │   │   ├── exception/       # Global exception handler
-│   │   │   ├── model/           # Domain models (User, Account, Transaction…)
-│   │   │   ├── repository/      # Spring Data MongoDB repositories
-│   │   │   ├── service/         # Business logic services
-│   │   │   └── util/            # JwtUtil and helpers
-│   │   └── resources/
-│   │       └── application.yaml
-│   └── test/
+├── .env.example                    # Backend env-var template
 ├── pom.xml
-└── README.md
+├── mvnw / mvnw.cmd
+│
+├── banking-frontend/               # React + Vite SPA
+│   ├── .env.example                # Frontend env-var template
+│   ├── vite.config.js              # Dev proxy + production build config
+│   └── src/
+│       ├── api/
+│       │   ├── axiosInstance.js    # /api  (VITE_API_BASE_URL aware)
+│       │   ├── authApi.js
+│       │   ├── accountApi.js
+│       │   ├── transactionApi.js   # /transactions  (VITE_API_BASE_URL aware)
+│       │   └── userApi.js
+│       ├── components/             # Layout, PinModal, StatCard, Spinner
+│       ├── context/                # AuthContext, AccountContext
+│       ├── pages/                  # Login, Register, Dashboard, Accounts,
+│       │                           # Transfer, Transactions, Profile
+│       ├── routes/                 # ProtectedRoute
+│       └── utils/
+│           └── pinUtils.js         # SHA-256 PIN hash/verify/save/clear
+│
+└── src/main/java/com/bankingsystem/
+    ├── config/
+    │   ├── SecurityConfig.java        # CORS + route auth rules
+    │   ├── RateLimitInterceptor.java  # 100 req/min per IP (scheduled reset)
+    │   └── ...
+    ├── controller/
+    │   ├── AuthController.java        # POST /api/auth/register|login
+    │   ├── AccountController.java     # /api/accounts/**
+    │   ├── TransactionController.java # /transactions/**
+    │   └── UserController.java        # /api/users/**
+    ├── dto / model / repository / service / util/
+    └── BankingSystemApplication.java  # @SpringBootApplication @EnableScheduling
 ```
+
+---
 
 ## 🔌 API Endpoints
 
 ### Authentication
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/auth/register` | Register a new user | No |
-| POST | `/api/auth/login` | Login and get JWT token | No |
+| Method | Endpoint | Auth |
+|--------|----------|------|
+| POST | `/api/auth/register` | No |
+| POST | `/api/auth/login` | No |
 
-### User Management
+### Users
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/users/{id}` | Get user details by ID | Yes |
+| Method | Endpoint | Auth |
+|--------|----------|------|
+| GET | `/api/users/{id}` | ✅ |
 
-### Account Management
+### Accounts
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/accounts?userId={userId}` | Create a new account | Yes |
-| GET | `/api/accounts/{id}/balance` | Get account balance | Yes |
-| POST | `/api/accounts/{id}/deposit` | Deposit money | Yes |
-| POST | `/api/accounts/{id}/withdraw` | Withdraw money | Yes |
+| Method | Endpoint | Auth |
+|--------|----------|------|
+| POST | `/api/accounts?userId={userId}` | ✅ |
+| GET | `/api/accounts/{id}/balance` | ✅ |
+| POST | `/api/accounts/{id}/deposit` | ✅ |
+| POST | `/api/accounts/{id}/withdraw` | ✅ |
 
-> **Transfers** are performed by the frontend by calling withdraw on the sender's account followed by deposit on the receiver's account.
+> **Deposit / Withdraw body:** `{ "amount": 500.00, "accountId": "<id>" }`
+
+> **Transfers** are client-side: withdraw from sender → deposit to receiver.
 
 ### Transactions
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/transactions/account/{accountId}` | Get all transactions for an account | Yes |
-| GET | `/transactions/filter` | Filter transactions by type, page, size | Yes |
-| GET | `/transactions/analytics/{accountId}` | Get total credit/debit analytics | Yes |
+| Method | Endpoint | Auth |
+|--------|----------|------|
+| GET | `/transactions/account/{accountId}` | ✅ |
+| GET | `/transactions/filter?accountId=&type=&page=&size=&sortBy=` | ✅ |
+| GET | `/transactions/analytics/{accountId}` | ✅ |
 
-### Request/Response Examples
+### Example payloads
 
-#### Register a User
 ```json
-POST /api/auth/register
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securePassword123"
-}
+// POST /api/auth/register
+{ "name": "Jane Doe", "email": "jane@example.com", "password": "secret123" }
+
+// POST /api/auth/login  →  { "token": "eyJ...", "userId": "...", "role": "USER" }
+{ "email": "jane@example.com", "password": "secret123" }
+
+// POST /api/accounts?userId=<id>
+{ "accountType": "SAVINGS" }
+
+// POST /api/accounts/<id>/deposit
+{ "amount": 1000.00, "accountId": "<id>" }
 ```
-
-#### Login
-```json
-POST /api/auth/login
-{
-  "email": "john@example.com",
-  "password": "securePassword123"
-}
-
-// Response
-{
-  "token": "eyJhbGciOiJIUzI1NiIs...",
-  "userId": "507f1f77bcf86cd799439011",
-  "role": "USER"
-}
-```
-
-#### Create Account
-```json
-POST /api/accounts?userId=507f1f77bcf86cd799439011
-{
-  "accountType": "SAVINGS"
-}
-
-// Response
-{
-  "accountId": "507f191e810c19729de860ea",
-  "accountNumber": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "balance": 0.0,
-  "accountType": "SAVINGS"
-}
-```
-
-#### Deposit Money
-```json
-POST /api/accounts/{accountId}/deposit
-{
-  "amount": 1000.00,
-  "accountId": "{accountId}"
-}
-```
-
-#### Filter Transactions
-```
-GET /transactions/filter?accountId={accountId}&type=CREDIT&page=0&size=10&sortBy=transactionDate
-```
-
-## 🔒 Security
-
-### Authentication Flow
-1. User registers with name, email, and password
-2. Password is encrypted using BCrypt
-3. User logs in with credentials
-4. Server returns a JWT token along with the user ID and role
-5. Client stores the token in `localStorage` and includes it in every subsequent request as `Authorization: Bearer <token>`
-6. Token is validated on each protected endpoint via `JwtAuthenticationFilter`
-
-### JWT Token Format
-```
-Authorization: Bearer <jwt-token>
-```
-
-### Roles
-- **USER** – Standard user with access to own accounts and transactions
-- **ADMIN** – Administrative privileges
-
-## 🧪 Testing
-
-Run backend tests with Maven:
-
-```bash
-mvn test
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License – see the LICENSE file for details.
-
-## 👨‍💻 Author
-
-**Khushboo1324**
-
-- GitHub: [@Khushboo1324](https://github.com/Khushboo1324)
-
-## 🙏 Acknowledgments
-
-- Spring Boot Documentation
-- MongoDB Documentation
-- JWT.io for token debugging
-- Swagger/OpenAPI for API documentation
-- Vite & React Documentation
 
 ---
 
-**Production Deployment Checklist:**
-- [ ] Change the JWT secret key to a strong, randomly generated value
-- [ ] Configure proper email credentials via environment variables
-- [ ] Set up MongoDB with authentication enabled
-- [ ] Enable HTTPS / TLS termination
-- [ ] Configure CORS policies for your deployed frontend domain
-- [ ] Build the frontend for production: `cd banking-frontend && npm run build`
-- [ ] Implement proper logging and monitoring
+## 🔒 Security
+
+### Auth flow
+1. Register → password BCrypt-hashed in DB
+2. Login → server returns `{ token, userId, role }`
+3. Client stores token in `localStorage`, sends `Authorization: Bearer <token>` on every request
+4. `JwtAuthenticationFilter` validates token on every protected endpoint
+5. 401 response → client clears storage and redirects to `/login`
+
+### Transfer PIN
+- Set at registration (4-digit numeric)
+- Stored as **SHA-256 hash** in `localStorage` — **never** sent to the server
+- Required before every fund transfer
+- Changeable from Profile (must verify current PIN first)
+
+### Rate limiting
+- 100 requests per minute per IP
+- Counter resets via `@Scheduled(fixedRate = 60_000)` — no permanent lockouts
+
+---
+
+## 🚢 Deployment
+
+### Option A — Same-origin (backend serves the built frontend)
+
+1. Build the frontend:
+   ```bash
+   cd banking-frontend && npm run build
+   ```
+2. Copy `banking-frontend/dist/*` into `src/main/resources/static/`
+3. Rebuild and run the Spring Boot JAR — it serves the SPA at `/`
+   ```bash
+   ./mvnw clean package -DskipTests
+   java -jar target/banking-system-0.0.1-SNAPSHOT.jar
+   ```
+
+### Option B — Split deployment (frontend on Vercel/Netlify, backend on Render/Railway)
+
+1. Deploy the Spring Boot JAR; note its public URL (e.g. `https://api.mybank.com`)
+2. Set backend environment variables in your platform's dashboard:
+   - `MONGODB_URI`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `JWT_SECRET`
+3. In your **frontend** deployment set:
+   - `VITE_API_BASE_URL=https://api.mybank.com`
+4. Deploy the frontend (`npm run build` → `dist/`)
+5. Update `corsConfigurationSource()` in `SecurityConfig.java` to allow your frontend domain
+
+### Production checklist
+- [ ] Set a strong random `JWT_SECRET` (64+ characters)
+- [ ] Set `MONGODB_URI` to your Atlas connection string
+- [ ] Configure `MAIL_USERNAME` / `MAIL_PASSWORD`
+- [ ] Set `VITE_API_BASE_URL` in the frontend deployment
+- [ ] Restrict CORS `allowedOriginPatterns` to your actual domain(s)
+- [ ] Enable HTTPS / TLS at the hosting layer
+- [ ] Review rate-limit threshold for expected traffic
+
+---
+
+## 👨‍💻 Author
+
+**Khushboo** — [@Khushboo1324](https://github.com/Khushboo1324)
+
+---
+
+## 🙏 Acknowledgements
+
+Spring Boot · MongoDB Atlas · React · Vite · Tailwind CSS · Lucide Icons · JWT.io · Swagger/OpenAPI

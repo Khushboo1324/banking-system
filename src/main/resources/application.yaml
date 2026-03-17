@@ -1,25 +1,28 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# application.yaml
+# Sensitive values are loaded from environment variables so that no secrets
+# are committed to source control.  See .env.example in the project root.
+# ─────────────────────────────────────────────────────────────────────────────
 spring:
   application:
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: ${MAIL_USERNAME}
-      password: ${MAIL_PASSWORD}
-      properties:
-        mail.smtp.auth: true
-        mail.smtp.starttls.enable: true
     name: Banking-System
-    data:
-      mongodb:
-        uri: mongodb://localhost:27017/DigitalBank
-        host: localhost
-        port: 27017
-        database: banking_db
-        auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb+srv://choudharykhushboogirdhariram_db_user:Gmc9035*@cluster0.hixs00o.mongodb.net/?appName=Cluster0}
+      database: banking_db
+      auto-index-creation: true
 server:
   port: 8080
 jwt:
-  secret: 234567890ytrdcvbvcxsw23456789iok1234567890qwertyuioasdfghjkzxcvbnm
+  secret: ${JWT_SECRET:234567890ytrdcvbvcxsw23456789iok1234567890qwertyuioasdfghjkzxcvbnm}
   expiration: 86400000
 
 logging:
