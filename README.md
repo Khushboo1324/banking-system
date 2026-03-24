@@ -5,7 +5,7 @@ A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** 
 The application is fully deployed and accessible via the following links:
 
 - **Backend**: [https://banking-system-8wqc.onrender.com](https://banking-system-8wqc.onrender.com)
-- **Frontend**: [https://banking-system-jpa3.vercel.app](https://banking-system-jpa3.vercel.app)
+- **Frontend**: [https://banking-system-ashy-pi.vercel.app](https://banking-system-ashy-pi.vercel.app)
 
 ## Table of Contents
 
@@ -330,7 +330,7 @@ The application is deployed using a split deployment model with the backend host
 | Component | URL |
 |-----------|-----|
 | Backend | [https://banking-system-8wqc.onrender.com](https://banking-system-8wqc.onrender.com) |
-| Frontend | [https://banking-system-jpa3.vercel.app](https://banking-system-jpa3.vercel.app) |
+| Frontend | [https://banking-system-ashy-pi.vercel.app](https://banking-system-ashy-pi.vercel.app) |
 
 ### Option A — Same-origin (backend serves the built frontend)
 
