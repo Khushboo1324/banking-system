@@ -2,54 +2,59 @@
 
 A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** backend and a **React + Vite** frontend, featuring JWT authentication, account management, PIN-secured fund transfers, transaction history with analytics, and a clean responsive UI.
 
-## 📋 Table of Contents
+The application is fully deployed and accessible via the following links:
 
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Prerequisites](#-prerequisites)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Running the Application](#-running-the-application)
-- [Frontend Overview](#-frontend-overview)
-- [API Documentation](#-api-documentation)
-- [Project Structure](#-project-structure)
-- [API Endpoints](#-api-endpoints)
-- [Security](#-security)
-- [Deployment](#-deployment)
+- **Backend**: [https://banking-system-8wqc.onrender.com](https://banking-system-8wqc.onrender.com)
+- **Frontend**: [https://banking-system-jpa3.vercel.app](https://banking-system-jpa3.vercel.app)
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Application](#running-the-application)
+- [Frontend Overview](#frontend-overview)
+- [API Documentation](#api-documentation)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Security](#security)
+- [Deployment](#deployment)
 
 ---
 
-##  Features
+## Features
 
 ### Core Banking
--  **User Registration & Login** — Secure JWT-based auth with BCrypt password hashing
--  **Account Management** — Create Savings or Current accounts per user
--  **PIN-Secured Transfers** — Send money to any account by Account ID; every transfer requires a 4-digit Transfer PIN
--  **Deposits & Withdrawals** — Full balance management
--  **Transaction Analytics** — Total credit/debit stats on the Dashboard
--  **Transaction History** — Filterable, searchable table (ALL / CREDIT / DEBIT)
+- **User Registration & Login** — Secure JWT-based auth with BCrypt password hashing
+- **Account Management** — Create Savings or Current accounts per user
+- **PIN-Secured Transfers** — Send money to any account by Account ID; every transfer requires a 4-digit Transfer PIN
+- **Deposits & Withdrawals** — Full balance management
+- **Transaction Analytics** — Total credit/debit stats on the Dashboard
+- **Transaction History** — Filterable, searchable table (ALL / CREDIT / DEBIT)
 
 ### Frontend UI
--  **Dashboard** — Welcome banner, live balance, analytics cards, quick-action buttons
--  **Accounts Page** — Visual gradient account card, balance refresh, create-account form with type selector
--  **Transfer Page** — PIN modal confirmation before every transfer
--  **Transactions Page** — Full history with filter tabs and keyword search
--  **Profile Page** — Personal info, account details, **Change Transfer PIN** flow (verify current → set new → confirm)
--  **Responsive Layout** — Collapsible sidebar with mobile hamburger menu
--  **Toast Notifications** — Real-time success/error feedback
--  **Rupee currency** — All monetary values displayed with ₨ symbol
+- **Dashboard** — Welcome banner, live balance, analytics cards, quick-action buttons
+- **Accounts Page** — Visual gradient account card, balance refresh, create-account form with type selector
+- **Transfer Page** — PIN modal confirmation before every transfer
+- **Transactions Page** — Full history with filter tabs and keyword search
+- **Profile Page** — Personal info, account details, **Change Transfer PIN** flow (verify current → set new → confirm)
+- **Responsive Layout** — Collapsible sidebar with mobile hamburger menu
+- **Toast Notifications** — Real-time success/error feedback
+- **Rupee currency** — All monetary values displayed with ₨ symbol
 
 ### Security & Performance
--  **JWT Authentication** — Stateless token auth, auto-logout on 401
--  **Spring Security** — Properly wired CORS + route protection
--  **Spring Cache** — Performance optimisation
--  **Rate Limiting** — Per-IP request counter (100 req/min, resets on schedule)
--  **Email Notifications** — Spring Mail integration (SMTP)
--  **Transfer PIN** — SHA-256 hashed, stored only in `localStorage`; set at registration, changeable from Profile
+- **JWT Authentication** — Stateless token auth, auto-logout on 401
+- **Spring Security** — Properly wired CORS + route protection
+- **Spring Cache** — Performance optimisation
+- **Rate Limiting** — Per-IP request counter (100 req/min, resets on schedule)
+- **Email Notifications** — Spring Mail integration (SMTP)
+- **Transfer PIN** — SHA-256 hashed, stored only in `localStorage`; set at registration, changeable from Profile
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
 ### Backend
 | Layer | Technology |
@@ -78,7 +83,7 @@ A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** 
 
 ---
 
-##  Prerequisites
+## Prerequisites
 
 - **Java 17+**
 - **Maven 3.6+** (or use the included `./mvnw`)
@@ -87,7 +92,7 @@ A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** 
 
 ---
 
-##  Installation
+## Installation
 
 ### 1. Clone the repository
 ```bash
@@ -108,7 +113,7 @@ npm install
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment variables
 
@@ -139,7 +144,7 @@ cp banking-frontend/.env.example banking-frontend/.env.local
 
 ---
 
-## ▶️ Running the Application
+## Running the Application
 
 > Start the **backend first** so the frontend proxy can reach it immediately.
 
@@ -168,7 +173,7 @@ App available at → `http://localhost:5173`
 
 ---
 
-## 🖥️ Frontend Overview
+## Frontend Overview
 
 | Route | Page | Description |
 |-------|------|-------------|
@@ -192,7 +197,7 @@ App available at → `http://localhost:5173`
 
 ---
 
-##  API Documentation
+## API Documentation
 
 Run the backend, then open:
 
@@ -201,7 +206,7 @@ Run the backend, then open:
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```
 banking-system/
@@ -243,7 +248,7 @@ banking-system/
 
 ---
 
-##  API Endpoints
+## API Endpoints
 
 ### Authentication
 
@@ -297,7 +302,7 @@ banking-system/
 
 ---
 
-##  Security
+## Security
 
 ### Auth flow
 1. Register → password BCrypt-hashed in DB
@@ -318,7 +323,14 @@ banking-system/
 
 ---
 
-##  Deployment
+## Deployment
+
+The application is deployed using a split deployment model with the backend hosted on Render and the frontend hosted on Vercel.
+
+| Component | URL |
+|-----------|-----|
+| Backend | [https://banking-system-8wqc.onrender.com](https://banking-system-8wqc.onrender.com) |
+| Frontend | [https://banking-system-jpa3.vercel.app](https://banking-system-jpa3.vercel.app) |
 
 ### Option A — Same-origin (backend serves the built frontend)
 
@@ -354,12 +366,12 @@ banking-system/
 
 ---
 
-##  Author
+## Author
 
 **Khushboo** — [@Khushboo1324](https://github.com/Khushboo1324)
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 Spring Boot · MongoDB Atlas · React · Vite · Tailwind CSS · Lucide Icons · JWT.io · Swagger/OpenAPI
