@@ -30,9 +30,13 @@ export default defineConfig({
     // Chunk splitting: keeps vendor code separate from app code for better caching
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['lucide-react', 'react-hot-toast'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
+            return 'vendor'
+          }
+          if (id.includes('node_modules/lucide-react') || id.includes('node_modules/react-hot-toast')) {
+            return 'ui'
+          }
         },
       },
     },
