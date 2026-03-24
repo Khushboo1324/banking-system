@@ -30,9 +30,15 @@ export default defineConfig({
     // Chunk splitting: keeps vendor code separate from app code for better caching
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['lucide-react', 'react-hot-toast'],
+        manualChunks(id) {
+          const vendorPackages = ['react', 'react-dom', 'react-router-dom']
+          const uiPackages = ['lucide-react', 'react-hot-toast']
+          if (vendorPackages.some((pkg) => id.includes(`/node_modules/${pkg}/`))) {
+            return 'vendor'
+          }
+          if (uiPackages.some((pkg) => id.includes(`/node_modules/${pkg}/`))) {
+            return 'ui'
+          }
         },
       },
     },
