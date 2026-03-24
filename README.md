@@ -1,4 +1,4 @@
-# 🏦 Banking System – Full-Stack Digital Banking Application
+# Banking System – Full-Stack Digital Banking Application
 
 A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** backend and a **React + Vite** frontend, featuring JWT authentication, account management, PIN-secured fund transfers, transaction history with analytics, and a clean responsive UI.
 
@@ -19,37 +19,37 @@ A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** 
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Core Banking
-- 👤 **User Registration & Login** — Secure JWT-based auth with BCrypt password hashing
-- 🏦 **Account Management** — Create Savings or Current accounts per user
-- 💸 **PIN-Secured Transfers** — Send money to any account by Account ID; every transfer requires a 4-digit Transfer PIN
-- 💰 **Deposits & Withdrawals** — Full balance management
-- 📊 **Transaction Analytics** — Total credit/debit stats on the Dashboard
-- 🔍 **Transaction History** — Filterable, searchable table (ALL / CREDIT / DEBIT)
+-  **User Registration & Login** — Secure JWT-based auth with BCrypt password hashing
+-  **Account Management** — Create Savings or Current accounts per user
+-  **PIN-Secured Transfers** — Send money to any account by Account ID; every transfer requires a 4-digit Transfer PIN
+-  **Deposits & Withdrawals** — Full balance management
+-  **Transaction Analytics** — Total credit/debit stats on the Dashboard
+-  **Transaction History** — Filterable, searchable table (ALL / CREDIT / DEBIT)
 
 ### Frontend UI
-- 🖥️ **Dashboard** — Welcome banner, live balance, analytics cards, quick-action buttons
-- 🗂️ **Accounts Page** — Visual gradient account card, balance refresh, create-account form with type selector
-- ↔️ **Transfer Page** — PIN modal confirmation before every transfer
-- 📋 **Transactions Page** — Full history with filter tabs and keyword search
-- 👤 **Profile Page** — Personal info, account details, **Change Transfer PIN** flow (verify current → set new → confirm)
-- 📱 **Responsive Layout** — Collapsible sidebar with mobile hamburger menu
-- 🔔 **Toast Notifications** — Real-time success/error feedback
-- ₨ **Rupee currency** — All monetary values displayed with ₨ symbol
+-  **Dashboard** — Welcome banner, live balance, analytics cards, quick-action buttons
+-  **Accounts Page** — Visual gradient account card, balance refresh, create-account form with type selector
+-  **Transfer Page** — PIN modal confirmation before every transfer
+-  **Transactions Page** — Full history with filter tabs and keyword search
+-  **Profile Page** — Personal info, account details, **Change Transfer PIN** flow (verify current → set new → confirm)
+-  **Responsive Layout** — Collapsible sidebar with mobile hamburger menu
+-  **Toast Notifications** — Real-time success/error feedback
+-  **Rupee currency** — All monetary values displayed with ₨ symbol
 
 ### Security & Performance
-- 🔐 **JWT Authentication** — Stateless token auth, auto-logout on 401
-- 🛡️ **Spring Security** — Properly wired CORS + route protection
-- ⚡ **Spring Cache** — Performance optimisation
-- 🚦 **Rate Limiting** — Per-IP request counter (100 req/min, resets on schedule)
-- ✉️ **Email Notifications** — Spring Mail integration (SMTP)
-- 🔑 **Transfer PIN** — SHA-256 hashed, stored only in `localStorage`; set at registration, changeable from Profile
+-  **JWT Authentication** — Stateless token auth, auto-logout on 401
+-  **Spring Security** — Properly wired CORS + route protection
+-  **Spring Cache** — Performance optimisation
+-  **Rate Limiting** — Per-IP request counter (100 req/min, resets on schedule)
+-  **Email Notifications** — Spring Mail integration (SMTP)
+-  **Transfer PIN** — SHA-256 hashed, stored only in `localStorage`; set at registration, changeable from Profile
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Backend
 | Layer | Technology |
@@ -78,7 +78,7 @@ A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** 
 
 ---
 
-## 📦 Prerequisites
+##  Prerequisites
 
 - **Java 17+**
 - **Maven 3.6+** (or use the included `./mvnw`)
@@ -87,7 +87,7 @@ A full-stack digital banking application with a **Spring Boot + MongoDB Atlas** 
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### 1. Clone the repository
 ```bash
@@ -192,7 +192,7 @@ App available at → `http://localhost:5173`
 
 ---
 
-## 📚 API Documentation
+##  API Documentation
 
 Run the backend, then open:
 
@@ -201,7 +201,7 @@ Run the backend, then open:
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 banking-system/
@@ -243,7 +243,7 @@ banking-system/
 
 ---
 
-## 🔌 API Endpoints
+##  API Endpoints
 
 ### Authentication
 
@@ -256,16 +256,16 @@ banking-system/
 
 | Method | Endpoint | Auth |
 |--------|----------|------|
-| GET | `/api/users/{id}` | ✅ |
+| GET | `/api/users/{id}` | yes |
 
 ### Accounts
 
 | Method | Endpoint | Auth |
 |--------|----------|------|
-| POST | `/api/accounts?userId={userId}` | ✅ |
-| GET | `/api/accounts/{id}/balance` | ✅ |
-| POST | `/api/accounts/{id}/deposit` | ✅ |
-| POST | `/api/accounts/{id}/withdraw` | ✅ |
+| POST | `/api/accounts?userId={userId}` | yes |
+| GET | `/api/accounts/{id}/balance` | yes |
+| POST | `/api/accounts/{id}/deposit` | yes |
+| POST | `/api/accounts/{id}/withdraw` | yes |
 
 > **Deposit / Withdraw body:** `{ "amount": 500.00, "accountId": "<id>" }`
 
@@ -275,9 +275,9 @@ banking-system/
 
 | Method | Endpoint | Auth |
 |--------|----------|------|
-| GET | `/transactions/account/{accountId}` | ✅ |
-| GET | `/transactions/filter?accountId=&type=&page=&size=&sortBy=` | ✅ |
-| GET | `/transactions/analytics/{accountId}` | ✅ |
+| GET | `/transactions/account/{accountId}` | yes |
+| GET | `/transactions/filter?accountId=&type=&page=&size=&sortBy=` | yes |
+| GET | `/transactions/analytics/{accountId}` | yes |
 
 ### Example payloads
 
@@ -297,7 +297,7 @@ banking-system/
 
 ---
 
-## 🔒 Security
+##  Security
 
 ### Auth flow
 1. Register → password BCrypt-hashed in DB
@@ -318,7 +318,7 @@ banking-system/
 
 ---
 
-## 🚢 Deployment
+##  Deployment
 
 ### Option A — Same-origin (backend serves the built frontend)
 
@@ -354,7 +354,7 @@ banking-system/
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Khushboo** — [@Khushboo1324](https://github.com/Khushboo1324)
 
