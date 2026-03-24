@@ -31,10 +31,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
+          const vendorPackages = ['react', 'react-dom', 'react-router-dom']
+          const uiPackages = ['lucide-react', 'react-hot-toast']
+          if (vendorPackages.some((pkg) => id.includes(`/node_modules/${pkg}/`))) {
             return 'vendor'
           }
-          if (id.includes('node_modules/lucide-react') || id.includes('node_modules/react-hot-toast')) {
+          if (uiPackages.some((pkg) => id.includes(`/node_modules/${pkg}/`))) {
             return 'ui'
           }
         },
