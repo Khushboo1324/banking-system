@@ -26,7 +26,7 @@ jwt:
   expiration: 86400000
 
 cors:
-  allowed-origins: ${ALLOWED_ORIGIN:https://banking-system-jpa3.vercel.app}
+  allowed-origins: ${ALLOWED_ORIGIN:https://banking-system-ashy-pi.vercel.app}
 
 logging:
   level:
